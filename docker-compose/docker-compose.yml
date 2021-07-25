@@ -1,0 +1,48 @@
+# docker-compose to deploy in development mode
+
+version: "3.8"
+
+services:
+  db:
+    networks:
+      - lg-stats
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: changeme
+    ports:
+      - 5432:5432
+    container_name: lg-stats-db
+  front_end:
+    networks:
+      - lg-stats
+    build: ../front_end
+    ports:
+      - 3000:80
+    restart: on-failure
+    container_name: lg-stats-front-end
+    env_file:
+      - ../front_end/.env.template
+  back_end:
+    networks:
+      - lg-stats
+    build: ../back_end
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    env_file:
+      - ../back_end/.env.template
+    restart: on-failure
+    container_name: lg-stats-back-end
+  blockchain:
+    networks:
+      - lg-stats
+    build: ../back_end/blockchain
+    ports:
+      - 8545:8545
+    container_name: lg-stats-blockchain
+
+networks:
+  lg-stats:
