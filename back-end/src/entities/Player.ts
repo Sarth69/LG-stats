@@ -17,7 +17,10 @@ export class Player extends BaseEntity {
   id: number;
 
   @Column()
-  name: string;
+  first_name: string;
+
+  @Column()
+  last_name: string;
 
   @Column()
   tl_nickname: string;
@@ -25,7 +28,7 @@ export class Player extends BaseEntity {
   @Column()
   shield: number;
 
-  @Column()
+  @Column({ nullable: true })
   image: string;
 
   @ManyToMany(() => Achievement, (achievement) => achievement.players)
@@ -33,4 +36,10 @@ export class Player extends BaseEntity {
 
   @OneToMany(() => Player_game, (player_game) => player_game.player)
   games_relation: Player_game;
+
+  @Column({ unique: true })
+  email: string;
+
+  @Column()
+  password: string;
 }
