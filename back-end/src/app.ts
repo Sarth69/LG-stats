@@ -12,6 +12,8 @@ import { config } from "./dbConfig";
 import { statsRouter } from "./routes/stats";
 
 import { routePrint } from "./utils/routeDisplayer";
+import { loginRouter } from "./routes/login";
+import { playerRouter } from "./routes/player";
 
 createConnection(config)
   .then(async () => {
@@ -45,6 +47,8 @@ createConnection(config)
       res.send("Express + TypeScript Server")
     );
     app.use("/stats", statsRouter);
+    app.use("/login", loginRouter);
+    app.use("/player", playerRouter);
 
     app.listen(PORT, () => {
       console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);

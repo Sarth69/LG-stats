@@ -22,5 +22,5 @@ export class Game extends BaseEntity {
   comments: string;
 
   @OneToMany(() => Player_game, (player_game) => player_game.game)
-  players_relation: Player_game;
+  players_relations: Player_game[];
 }

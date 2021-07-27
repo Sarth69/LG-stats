@@ -5,10 +5,9 @@ import {
   Column,
   ManyToMany,
   OneToMany,
+  JoinTable,
 } from "typeorm";
-import { Game } from "./Game";
 import { Achievement } from "./Achievement";
-import { Role } from "./Role";
 import { Player_game } from "./Player_game";
 
 @Entity({ name: "Player" })
@@ -32,10 +31,11 @@ export class Player extends BaseEntity {
   image: string;
 
   @ManyToMany(() => Achievement, (achievement) => achievement.players)
+  @JoinTable()
   achievements: Achievement[];
 
   @OneToMany(() => Player_game, (player_game) => player_game.player)
-  games_relation: Player_game;
+  games_relations: Player_game[];
 
   @Column({ unique: true })
   email: string;

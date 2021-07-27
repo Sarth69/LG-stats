@@ -15,13 +15,13 @@ export class Player_game extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Player, (player) => player.games_relation)
+  @ManyToOne(() => Player, (player) => player.games_relations)
   player: Player;
 
-  @ManyToOne(() => Game, (game) => game.players_relation)
+  @ManyToOne(() => Game, (game) => game.players_relations)
   game: Game;
 
-  @ManyToOne(() => Role, (role) => role.players_relation)
+  @ManyToOne(() => Role, (role) => role.players_relations)
   role: Role;
 
   @Column()

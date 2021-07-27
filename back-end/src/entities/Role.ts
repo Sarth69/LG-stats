@@ -32,5 +32,5 @@ export class Role extends BaseEntity {
   side: Side;
 
   @OneToMany(() => Player_game, (player_game) => player_game.role)
-  players_relation: Player_game[];
+  players_relations: Player_game[];
 }

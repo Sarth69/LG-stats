@@ -28,18 +28,20 @@ export const signIn = async (
 
   const player = await Player.findOne({ email });
   if (!player) {
-    return res
-      .status(404)
-      .json({ auth: false, message: "sign in error : invalid_credentials" });
+    return res.status(404).json({
+      auth: false,
+      message: "Erreur de connexion : cet email n'est associé à aucun compte",
+    });
   }
 
   // If we found the player, we compare the hash of his password with
   // the stored hash
   const match = await bcrypt.compare(password, player.password);
   if (!match) {
-    return res
-      .status(404)
-      .json({ auth: false, message: "sign in error : invalid_credentials" });
+    return res.status(404).json({
+      auth: false,
+      message: "Erreur de connexion : mot de passe incorrect",
+    });
   }
 
   req.session.isLogged = true;
@@ -73,7 +75,7 @@ export const signUp = async (
   if (existingPlayer) {
     return res
       .status(409)
-      .json({ message: "sign up error : email already in use" });
+      .json({ message: "Erreur d'inscription : cet email est déjà utilisé" });
   }
 
   // No problem, we can add this new player to the database

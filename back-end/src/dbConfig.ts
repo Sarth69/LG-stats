@@ -1,5 +1,11 @@
 import { ConnectionOptions } from "typeorm";
 
+import { Achievement } from "./entities/Achievement";
+import { Game } from "./entities/Game";
+import { Player } from "./entities/Player";
+import { Player_game } from "./entities/Player_game";
+import { Role } from "./entities/Role";
+
 export const config: ConnectionOptions = {
   type: "postgres",
   host: process.env.DB_HOST,
@@ -9,6 +15,5 @@ export const config: ConnectionOptions = {
   database: process.env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [
-  ],
+  entities: [Achievement, Game, Player, Player_game, Role],
 };
