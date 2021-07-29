@@ -14,6 +14,7 @@ import { statsRouter } from "./routes/stats";
 import { routePrint } from "./utils/routeDisplayer";
 import { loginRouter } from "./routes/login";
 import { playerRouter } from "./routes/player";
+import { gameRouter } from "./routes/game";
 
 createConnection(config)
   .then(async () => {
@@ -49,6 +50,7 @@ createConnection(config)
     app.use("/stats", statsRouter);
     app.use("/login", loginRouter);
     app.use("/player", playerRouter);
+    app.use("/game", gameRouter);
 
     app.listen(PORT, () => {
       console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);

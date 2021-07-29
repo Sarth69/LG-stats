@@ -6,7 +6,6 @@ import {
   ManyToOne,
 } from "typeorm";
 import { Game } from "./Game";
-import { Achievement } from "./Achievement";
 import { Role } from "./Role";
 import { Player } from "./Player";
 
@@ -24,6 +23,6 @@ export class Player_game extends BaseEntity {
   @ManyToOne(() => Role, (role) => role.players_relations)
   role: Role;
 
-  @Column()
+  @Column({ nullable: true })
   win: boolean;
 }

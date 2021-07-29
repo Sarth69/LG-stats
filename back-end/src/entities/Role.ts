@@ -15,6 +15,7 @@ export enum Side {
   WolfAffiliate = "WolfAffiliate",
   Undecided = "Undecided",
   Independant = "Independant",
+  GM = "GM",
 }
 
 @Entity({ name: "Role" })
@@ -25,7 +26,7 @@ export class Role extends BaseEntity {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
   @Column()
