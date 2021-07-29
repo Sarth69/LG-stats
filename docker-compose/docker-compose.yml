@@ -14,16 +14,16 @@ services:
     ports:
       - 5432:5432
     container_name: lg-stats-db
-  front_end:
+  front:
     networks:
       - lg-stats
-    build: ../front_end
+    build: ../front
     ports:
       - 3000:80
     restart: on-failure
-    container_name: lg-stats-front-end
+    container_name: lg-stats-front
     env_file:
-      - ../front_end/.env.template
+      - ../front/.env.template
   back_end:
     networks:
       - lg-stats

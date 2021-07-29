@@ -14,20 +14,20 @@ services:
     ports:
       - 5432:5432
     container_name: lg-stats-db
-  front-end:
+  front:
     networks:
       - lg-stats
     build:
-      context: ../front-end
+      context: ../front
       dockerfile: Dockerfile-dev
     volumes: # Enable server reload on code changes
-      - ../front-end:/app
+      - ../front:/app
     ports:
       - 3000:3000
     restart: on-failure
-    container_name: lg-stats-front-end
+    container_name: lg-stats-front
     env_file:
-      - ../front-end/.env.template
+      - ../front/.env.template
   back-end:
     networks:
       - lg-stats
