@@ -25,6 +25,10 @@ const useStyles = makeStyles((theme) =>
       display: "flex",
       justifyContent: "center",
     },
+    paper: {
+      display: "flex",
+      justifyContent: "center",
+    },
     playerList: {
       borderRadius: "25px",
       borderStyle: "solid",
@@ -42,6 +46,9 @@ const useStyles = makeStyles((theme) =>
       minWidth: "95%",
     },
     list: {
+      width: "100%",
+    },
+    form: {
       width: "100%",
     },
   })

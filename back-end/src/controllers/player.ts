@@ -48,6 +48,5 @@ export const checkIsLogged = async (req: SessionRequest, res: Response) => {
 
 export const getPlayers = async (req: SessionRequest, res: Response) => {
   const players = await Player.find();
-  console.log(players);
   return res.status(200).json(players);
 };

@@ -10,6 +10,8 @@ import {
   deletePlayer,
   newGM,
   newPlayer,
+  newRole,
+  deleteRole,
 } from "../controllers/game";
 
 // CONTROLLER -----------------------------------
@@ -29,6 +31,8 @@ router.get("/*", error_404);
 // POST ---------------------
 
 router.post("/", newGame);
+router.post("/role", newRole);
+router.post("/role/delete", deleteRole);
 router.post("/gm", newGM);
 router.post("/player", newPlayer);
 router.post("/date", setDate);

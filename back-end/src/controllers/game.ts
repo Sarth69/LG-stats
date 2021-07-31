@@ -53,7 +53,6 @@ export async function getGame(
   req: Request<GameID>,
   res: Response
 ): Promise<Response> {
-  console.log(req.params.id);
   const game = await Game.findOne(parseInt(req.params.id), {
     relations: [
       "players_relations",
@@ -61,7 +60,6 @@ export async function getGame(
       "players_relations.role",
     ],
   });
-  console.log(game.players_relations[0].player);
   if (!game) {
     return res.status(404).json({ message: "Game with this id doesn't exist" });
   }
@@ -69,18 +67,24 @@ export async function getGame(
 }
 
 export const setDate = async (req: SessionRequest, res: Response) => {
-  const game = await Game.update(req.body.gameID, {
+  await Game.update(req.body.gameID, {
     start_date: req.body.start_date,
   });
-  return res.status(204).json(game);
+  const game = await Game.findOne(req.body.gameID, {
+    relations: [
+      "players_relations",
+      "players_relations.player",
+      "players_relations.role",
+    ],
+  });
+  console.log(game);
+  return res.status(200).json({ data: game });
 };
 
 export const deletePlayer = async (req: SessionRequest, res: Response) => {
   const player_game = await Player_game.findOne(req.body.players_relation.id, {
     relations: ["game"],
   });
-  console.log(player_game);
-  console.log(req.body.players_relation);
   const gameID = player_game.game.id;
   await Player_game.delete(req.body.players_relation.id);
   const game = await Game.findOne(gameID, {
@@ -90,14 +94,11 @@ export const deletePlayer = async (req: SessionRequest, res: Response) => {
       "players_relations.role",
     ],
   });
-  console.log(game.players_relations);
   return res.status(200).json({ data: game });
 };
 
 export const newGM = async (req: SessionRequest, res: Response) => {
   const player = await Player.findOne(req.body.playerID);
-  console.log(req.body.playerID);
-  console.log(player);
   if (!player) {
     return res.status(404).json({ message: "Player not registered" });
   }
@@ -124,9 +125,6 @@ export const newGM = async (req: SessionRequest, res: Response) => {
 
 export const newPlayer = async (req: SessionRequest, res: Response) => {
   const player = await Player.findOne(req.body.playerID);
-  console.log("new Player");
-  console.log(req.body.playerID);
-  console.log(player);
   if (!player) {
     return res.status(404).json({ message: "Player not registered" });
   }
@@ -147,4 +145,44 @@ export const newPlayer = async (req: SessionRequest, res: Response) => {
   });
 
   return res.status(200).json({ data: game });
+};
+
+export const newRole = async (req: SessionRequest, res: Response) => {
+  const role = await Role.findOne({ name: req.body.name });
+  if (!role) {
+    return res.status(404).json({ message: "This role doesn't exist" });
+  }
+
+  let game = await Game.findOne(req.body.gameID);
+
+  let newPlayerGame = new Player_game();
+  newPlayerGame.role = role;
+  newPlayerGame.game = game;
+  newPlayerGame = await newPlayerGame.save();
+
+  game = await Game.findOne(req.body.gameID, {
+    relations: [
+      "players_relations",
+      "players_relations.player",
+      "players_relations.role",
+    ],
+  });
+
+  return res.status(200).json({ data: game });
+};
+
+export const deleteRole = async (req: SessionRequest, res: Response) => {
+  const role = await Role.findOne({ name: req.body.name });
+  const game = await Game.findOne(parseInt(req.body.gameID));
+  const player_game = await Player_game.findOne({ role: role, game: game });
+  await Player_game.delete(player_game.id);
+
+  const gameToReturn = await Game.findOne(req.body.gameID, {
+    relations: [
+      "players_relations",
+      "players_relations.player",
+      "players_relations.role",
+    ],
+  });
+  return res.status(200).json({ data: gameToReturn });
 };

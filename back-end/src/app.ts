@@ -10,7 +10,7 @@ import { createConnection } from "typeorm";
 import { config } from "./dbConfig";
 
 import { statsRouter } from "./routes/stats";
-
+import { roleRouter } from "./routes/role";
 import { routePrint } from "./utils/routeDisplayer";
 import { loginRouter } from "./routes/login";
 import { playerRouter } from "./routes/player";
@@ -51,6 +51,7 @@ createConnection(config)
     app.use("/login", loginRouter);
     app.use("/player", playerRouter);
     app.use("/game", gameRouter);
+    app.use("/role", roleRouter);
 
     app.listen(PORT, () => {
       console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);

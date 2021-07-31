@@ -49,7 +49,7 @@ function PlayerList({ gameID, playerOrGM }) {
           players_relation.role.name === "Game Master"
         ) {
           gm.push(players_relation);
-        } else {
+        } else if (players_relation.player) {
           players.push(players_relation);
         }
       }
@@ -95,7 +95,7 @@ function PlayerList({ gameID, playerOrGM }) {
   const addNewGM = async () => {
     if (newGM !== "") {
       const alreadyPlayer = query.data.data.players_relations.find(
-        (relation) => relation.player.id === newGM
+        (relation) => relation.player && relation.player.id === newGM
       );
       console.log(alreadyPlayer);
       if (alreadyPlayer) {
@@ -122,7 +122,7 @@ function PlayerList({ gameID, playerOrGM }) {
   const addNewPlayer = async () => {
     if (newPlayer !== "") {
       const alreadyPlayer = query.data.data.players_relations.find(
-        (relation) => relation.player.id === newGM
+        (relation) => relation.player && relation.player.id === newGM
       );
       console.log(alreadyPlayer);
       if (alreadyPlayer) {
@@ -152,34 +152,40 @@ function PlayerList({ gameID, playerOrGM }) {
         {playerOrGM === "Player" &&
           (players.length > 0 ? (
             players.map((players_relation, index) => {
-              return (
-                <ListItem key={index}>
-                  <ListItemText
-                    primary={
-                      index +
-                      1 +
-                      " - " +
-                      players_relation.player.first_name +
-                      " @" +
-                      players_relation.player.tl_nickname
-                    }
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => {
-                        deletePlayer(players_relation, "Player");
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              );
+              if (players_relation.player) {
+                return (
+                  <ListItem key={index}>
+                    <ListItemText
+                      primary={
+                        index +
+                        1 +
+                        " - " +
+                        players_relation.player.first_name +
+                        " @" +
+                        players_relation.player.tl_nickname
+                      }
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={() => {
+                          deletePlayer(players_relation, "Player");
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                );
+              } else {
+                return null;
+              }
             })
           ) : (
-            <Typography>Aucun joueur inscrit</Typography>
+            <Typography className={classes.noPlayer}>
+              Aucun joueur inscrit
+            </Typography>
           ))}
         {playersQueryResult.data && playerOrGM === "Player" && (
           <ListItem key={players.length}>
@@ -243,7 +249,9 @@ function PlayerList({ gameID, playerOrGM }) {
               );
             })
           ) : (
-            <Typography>Aucun MJ inscrit</Typography>
+            <Typography className={classes.noPlayer}>
+              Aucun MJ inscrit
+            </Typography>
           ))}
         {playersQueryResult.data && playerOrGM === "GM" && (
           <ListItem key={gm.length}>

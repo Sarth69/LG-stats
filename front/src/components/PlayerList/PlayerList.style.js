@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) =>
       margin: theme.spacing(1),
       minWidth: "95%",
     },
+    noPlayer: {
+      margin: theme.spacing(2),
+    },
   })
 );
 
